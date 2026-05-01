@@ -1,137 +1,73 @@
-# Datathon 2026 — Task 3: Sales Forecasting Pipeline
+# Datathon 2026 Round 1 — Team Nevergiveup
 
-End-to-end forecasting pipeline for daily `Revenue` and `COGS` over `2023-01-01 → 2024-07-01` (548 days), competition `datathon-2026-round-1` on Kaggle.
+This repository organizes the Round 1 submission into three competition parts plus the final report.
 
-## Architecture
+## Repository Structure
 
-A four-layer ensemble combining gradient-boosted trees, linear regression, and per-quarter specialists, finished by a scalar calibration step.
-
-```
-sales.csv (2012-2022, log1p target, sample-weight 2014-2018)
-    │
-    ▼
-[~88 features: calendar + Fourier + Tet windows + per-promo + real promo aggregates]
-    │
-    ▼
-─── Layer 1 — 3 GBM boosters (each: 1 base + 4 quarterly specialists) ───
-    LightGBM  ───┐
-    XGBoost   ───┤── per-target weighted GBM_blend
-    CatBoost  ───┘
-    │
-    ▼
-─── Layer 2 — Ridge (z-score normalized features) ───
-    │
-    ▼
-─── Layer 3 — Ensemble: 0.20 × Ridge + 0.80 × GBM_blend ───
-    │
-    ▼
-─── Layer 4 — Calibration: × CR (Revenue), × CC (COGS) ───
-    │
-    ▼
-submission_final.csv
-```
-
-### Why this works
-
-1. **Sample weighting (2014-2018 emphasized 100×)** — the e-commerce business has three structural regimes (early-stage 2013, stable mid-period 2014-2018, COVID-shifted 2019-2022). Training primarily on the mid-period gives the cleanest signal; the calibration step compensates for the test-era trend.
-2. **Three diverse boosters** — LightGBM (leaf-wise growth), XGBoost (level-wise), CatBoost (ordered boosting). Their errors are partially independent so blending reduces variance.
-3. **Quarterly specialists** — each booster runs 5× (1 base + 4 quarter-boosted variants), with the matching quarter's specialist contributing 60% to the per-day prediction. Captures intra-year heterogeneity.
-4. **Ridge regularizer** — small linear contribution stabilizes the long-horizon trend that tree models tend to flatten.
-5. **Calibration multipliers** (CR=1.26 Revenue, CC=1.32 COGS) — both targets undershoot test-era values when trained on the mid-period; tuned scalar correction closes the gap.
-
-## Project layout
-
-```
+```text
 .
-├── data/                                    # 14 raw competition CSVs
-│   ├── sales.csv, customers.csv, orders.csv, ...
-│   └── sample_submission.csv
-├── src/
-│   ├── config.py                            # constants, paths, hyperparameters
-│   ├── features.py                          # ~88 calendar/Fourier/Tet/promo features
-│   ├── models.py                            # LGB + XGB + CatBoost + Ridge trainers
-│   ├── ensemble.py                          # blending + calibration helpers
-│   ├── train.py                             # main pipeline (orchestrator)
-│   ├── components.py                        # alternative: Revenue = orders × AOV
-│   ├── recursive.py                         # alternative: HGB + recursive forecasting
-│   ├── tune.py                              # Optuna hyperparameter search
-│   ├── analyze.py                           # diagnostic EDA
-│   └── explain.py                           # SHAP-based XAI plots
-├── outputs/
-│   ├── submissions/
-│   │   ├── submission_default.csv           # raw pipeline output
-│   │   └── submission_final.csv             # FINAL — upload this to Kaggle
-│   ├── logs/                                # train metadata + history
-│   ├── shap/                                # SHAP plots + importance CSVs
-│   └── cache/                               # feature parquet cache
-├── notebooks/
-│   └── run_pipeline.ipynb                   # one-click end-to-end notebook
-├── run.py                                   # CLI entry point
-├── requirements.txt
-└── README.md
+├── part1/      # Multiple-choice answers and related notes
+├── part2/      # Visualization and data analysis materials
+├── part3/      # Sales forecasting pipeline, data, outputs, and submission files
+└── report/     # NeurIPS-style report sections and report assets
 ```
 
-## Setup
+## Part 1 — Multiple Choice
+
+`part1/` is reserved for the answers to the 10 multiple-choice questions in the official submission form.
+
+Current file:
+
+- `part1/README.md`: overview of the MCQ notebook and answer mapping.
+- `part1/part1.ipynb`: notebook used to compute/check Part 1 answers.
+
+## Part 2 — Visualization and Data Analysis
+
+`part2/` is reserved for EDA dashboards, figures, notebooks, and supporting files for the visualization and business analysis section.
+
+Current file:
+
+- `part2/README.md`: lightweight structure and working themes for Part 2.
+
+The report should summarize Part 2 insights using the required structure:
+
+- what each visualization shows,
+- key findings supported by numbers,
+- business implications or actionable recommendations.
+
+## Part 3 — Sales Forecasting
+
+`part3/` contains the complete forecasting pipeline for daily `Revenue` and `COGS`.
+
+Key files:
+
+- `part3/README.md`: detailed forecasting pipeline documentation.
+- `part3/run.py`: CLI entry point for analysis, training, and explainability.
+- `part3/src/`: source code for feature engineering, models, ensembling, tuning, and SHAP analysis.
+- `part3/data/`: competition CSV files.
+- `part3/outputs/submissions/submission_final.csv`: final Kaggle submission file.
+- `part3/outputs/shap/`: SHAP plots and feature importance outputs.
+
+To reproduce the forecasting output:
 
 ```bash
-# Python 3.11+ recommended
+cd part3
 pip install -r requirements.txt
-
-# Verify data files
-ls data/sales.csv data/sample_submission.csv
+python run.py train
+python run.py explain
 ```
 
-## Usage
+## Report
 
-End-to-end pipeline:
+`report/` contains report writing material. The current report project is:
 
-```bash
-python run.py            # default = run all stages: analyze → train → explain
-```
+- `report/Styles/main.tex`: current NeurIPS-style report project.
+- `report/report.zip`: original report archive.
 
-Individual stages:
+The final report should follow the NeurIPS-style template required by the competition and stay within the 4-page limit excluding references and appendix.
 
-```bash
-python run.py analyze    # diagnostic EDA (no training)
-python run.py tune 25    # Optuna hyperparameter search (25 trials per booster × target)
-python run.py train      # train pipeline → submission_default.csv (and copy → submission_final.csv)
-python run.py explain    # SHAP analysis → outputs/shap/
-```
+## GitHub Repository
 
-Or run the one-click notebook: `notebooks/run_pipeline.ipynb` (Cell → Run All).
+Public repository link:
 
-The final submission to upload to Kaggle is **`outputs/submissions/submission_final.csv`**.
-
-## Reproducibility
-
-| Component | Seed | Deterministic? |
-|---|---|---|
-| LightGBM | 42 | yes (with fixed library version) |
-| XGBoost | 42 | yes |
-| CatBoost | 42 | mostly yes (±1-2K MAE variance possible) |
-| Ridge | 42 | yes |
-
-Re-running the full pipeline reproduces `submission_final.csv` to within ±1-2K MAE.
-
-## Key hyperparameters (in `src/config.py`)
-
-| Constant | Value | Purpose |
-|---|---|---|
-| `WEIGHT_STABLE_YEARS` | (2014, 2018) | sample-weight 1.0 window |
-| `WEIGHT_OTHER` | 0.01 | weight for years outside stable window |
-| `Q_BOOST` | 2.0 | weight multiplier for matching-quarter rows in specialist |
-| `SPECIALIST_BLEND` | 0.60 | specialist contribution in per-day blend |
-| `RIDGE_WEIGHT` | 0.20 | Ridge fraction in two-layer ensemble |
-| `GBM_WEIGHTS_REV` | (0.40, 0.40, 0.20) | LGB/XGB/CAT weights for Revenue |
-| `GBM_WEIGHTS_COG` | (0.55, 0.25, 0.20) | LGB/XGB/CAT weights for COGS |
-| `DEFAULT_CR`, `DEFAULT_CC` | 1.26, 1.32 | calibration multipliers |
-
-## Output sanity checks
-
-After training, expected metrics:
-
-| Metric | Value |
-|---|---|
-| Public leaderboard (verified) | 681,610 |
-| Validation MAE Revenue (hold-out 2022-H2, calibrated) | ~440K |
-| Validation MAE COGS (hold-out 2022-H2, calibrated) | ~400K |
+<https://github.com/NhtJm/nevergiveuppteam>

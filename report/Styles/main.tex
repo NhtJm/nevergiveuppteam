@@ -1,0 +1,214 @@
+\documentclass{article}
+
+\usepackage[preprint]{neurips_2025}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese,english]{babel}
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage[protrusion=false]{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{caption}
+
+\raggedbottom
+\setlength{\parskip}{1pt}
+\setlength{\textfloatsep}{5pt}
+\setlength{\floatsep}{4pt}
+\setlength{\intextsep}{4pt}
+\setlist{nosep,leftmargin=1.25em}
+\captionsetup{font=small,skip=2pt}
+
+
+\title{Datathon 2026 Round 1 Report\\
+\large Part 2: Visualization \& Data Analysis \\
+\large Part 3: Sales Forecasting}
+
+\author{%
+  Team Nevergiveup \\
+  Trần Nguyễn Thế Nhật \quad Nguyễn Thành Đạt \quad Phạm Huỳnh Bảo Đại \\
+  \texttt{nhatjames24.2004@gmail.com}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Báo cáo này tóm tắt các insight kinh doanh chính từ dashboard của Phần 2 và sắp xếp chúng thành một câu chuyện rõ ràng, phù hợp với yêu cầu của cuộc thi. Chúng tôi đi từ các phát hiện mô tả, đến phần diễn giải nguyên nhân, và kết thúc bằng các khuyến nghị thực tiễn liên quan đến tính mùa vụ, thu hút khách hàng, thiết kế khuyến mãi, hiệu quả sản phẩm, vận hành theo khu vực và rủi ro tồn kho.
+\end{abstract}
+
+\section{Giới thiệu}
+
+\subsection{Ngữ cảnh}
+Dự án này sử dụng bộ dữ liệu thương mại điện tử ngành thời trang của Datathon 2026 để phân tích hiệu quả kinh doanh và dự báo doanh thu trong tương lai. Báo cáo được tổ chức theo đúng cấu trúc bài làm và tiêu chí đánh giá.
+
+\subsection{Cấu trúc}
+Phần 2 chuyển dashboard trong \texttt{part2.pdf} thành một câu chuyện kinh doanh có cấu trúc. Nội dung thảo luận tuân theo yêu cầu của Phần 2 trong đề bài: mỗi nhóm biểu đồ đều đi kèm phần giải thích biểu đồ thể hiện điều gì, các phát hiện chính được hỗ trợ bởi dashboard, cũng như hàm ý kinh doanh hoặc hành động được khuyến nghị.
+
+\section{Tổng quan}
+
+\subsection{Nguồn Data}
+Tóm tắt ngắn gọn các bộ dữ liệu cốt lõi được sử dụng trong phân tích.
+
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{Dữ liệu danh mục:} sản phẩm, khách hàng, khuyến mãi, địa lý.
+    \item \textbf{Dữ liệu giao dịch:} đơn hàng, chi tiết đơn hàng, thanh toán, vận chuyển, hoàn trả, đánh giá.
+    \item \textbf{Dữ liệu phân tích:} dữ liệu huấn luyện doanh số và định dạng nộp bài.
+    \item \textbf{Dữ liệu vận hành:} tồn kho và lưu lượng truy cập web.
+\end{itemize}
+
+\subsection{Data Preparation Summary}
+Đối với Phần 2, chúng tôi kết hợp các bảng doanh số, sản phẩm, chi tiết đơn hàng, hoàn trả, vận chuyển, lưu lượng truy cập web và tồn kho để tạo ra các góc nhìn phục vụ kinh doanh về doanh thu, lợi nhuận, hành vi khách hàng, hiệu quả marketing và hiệu suất vận hành. Ngày tháng được chuẩn hóa, thuộc tính sản phẩm được nối vào dữ liệu cấp giao dịch, và các chỉ số phát sinh như lợi nhuận gộp, biên lợi nhuận gộp, tỷ lệ hoàn trả, mức sử dụng khuyến mãi, số ngày giao hàng, tỷ lệ đáp ứng đơn hàng và tỷ lệ hết hàng được dùng để hỗ trợ diễn giải.
+
+\section{Phần 2: Visualization and Data Analysis}
+
+\subsection{Executive Summary}
+Phần 2 cho thấy ba thông điệp rõ ràng. Thứ nhất, doanh nghiệp có quy mô đáng kể nhưng khả năng sinh lời chỉ ở mức trung bình, với \textbf{16.43 tỷ} doanh thu, \textbf{14.16 tỷ} giá vốn hàng bán, và biên lợi nhuận gộp khoảng \textbf{14\%}. Thứ hai, hiệu quả kinh doanh không đồng đều giữa các tháng, kênh bán hàng và danh mục sản phẩm, cho thấy tăng trưởng đang tập trung ở một số khu vực nhất định thay vì diễn ra rộng khắp. Thứ ba, thất thoát có thể tránh được chủ yếu đến từ hiệu quả kênh còn yếu, mức độ tập trung cao vào một số danh mục và các đơn hoàn trả liên quan đến kích cỡ.
+
+\subsection{Chủ đề phân tích 1: Xu hướng doanh thu và tính mùa vụ}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/year_revenue_cogs.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/monthly_revenue.png}
+    \end{minipage}
+    \caption{Mô hình doanh thu theo thời gian. Doanh thu năm và giá vốn hàng bán biến động khá sát nhau, trong khi doanh thu theo tháng cho thấy đỉnh mùa vụ rõ rệt vào giữa năm.}
+    \label{fig:seasonality}
+\end{figure}
+
+Doanh thu thể hiện tính mùa vụ rõ ràng. Doanh số tăng từ tháng Một, đạt đỉnh vào khoảng \textbf{tháng Năm}, duy trì mức cao trong giai đoạn \textbf{tháng Tư--tháng Sáu}, sau đó giảm dần về \textbf{tháng Mười Một--tháng Mười Hai}. Vì doanh thu và giá vốn hàng bán biến động sát nhau, các giai đoạn cao điểm cần được quản lý cẩn thận để bảo vệ biên lợi nhuận, không chỉ tập trung vào sản lượng bán ra.
+
+Doanh nghiệp nên lập kế hoạch tồn kho, nhân sự và chiến dịch marketing xoay quanh các tháng cao điểm lặp lại, đồng thời theo dõi sát biên lợi nhuận trong các giai đoạn này.
+
+\subsection{Chủ đề phân tích 2: Hiệu quả sản phẩm, danh mục hoặc phân khúc}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/revenue_by_category.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/discount_by_category.png}
+    \end{minipage}
+
+    \vspace{0.8em}
+
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/margin_by_segment.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/returns_by_reason.png}
+    \end{minipage}
+    \caption{Insight về sản phẩm và danh mục. Streetwear chiếm ưu thế về doanh thu và mức chiết khấu, Activewear dẫn đầu về biên lợi nhuận, còn hoàn trả do sai kích cỡ là vấn đề hoàn trả lớn nhất.}
+    \label{fig:category-performance}
+\end{figure}
+
+Cơ cấu sản phẩm có mức độ tập trung cao. \textbf{Streetwear} chiếm ưu thế cả về doanh thu lẫn chiết khấu, trong khi \textbf{Activewear} cho thấy hồ sơ biên lợi nhuận tốt nhất. Ở chiều ngược lại, \textbf{sai kích cỡ} là lý do hoàn trả lớn nhất, khiến độ chính xác về kích cỡ trở thành một vấn đề thương mại quan trọng.
+
+Doanh nghiệp nên giảm phụ thuộc vào một danh mục duy nhất, kiểm soát cường độ chiết khấu và cải thiện hướng dẫn chọn kích cỡ để giảm các đơn hoàn trả có thể tránh được.
+
+\subsection{Chủ đề phân tích 3: Insight về khách hàng và kênh}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.58\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/channel_sessions_revenue.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.38\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/channel_conversion.png}
+    \end{minipage}
+    \caption{Hiệu quả kênh. Lưu lượng truy cập và doanh thu có quan hệ dương nhưng không ổn định, trong khi kênh giới thiệu và truy cập trực tiếp có tỷ lệ chuyển đổi cao nhất.}
+    \label{fig:channels}
+\end{figure}
+
+Chất lượng lưu lượng truy cập khác biệt rõ rệt giữa các nguồn. \textbf{Kênh giới thiệu} và \textbf{kênh trực tiếp} có tỷ lệ chuyển đổi tốt nhất, trong khi \textbf{tìm kiếm tự nhiên} và \textbf{tìm kiếm trả phí} yếu hơn. Nhiều phiên truy cập hơn không phải lúc nào cũng tạo ra doanh thu tăng tương ứng.
+
+Ngân sách marketing nên được chuyển dịch sang các kênh có tỷ lệ chuyển đổi cao, đồng thời các kênh yếu hơn cần được cải thiện về khả năng nhắm mục tiêu và chất lượng trang đích.
+
+\subsection{Chủ đề phân tích 4: Vận hành, giao hàng và hoàn trả}
+Phần lớn doanh thu đến từ các sản phẩm không khuyến mãi, cho thấy nhu cầu nền tảng vốn đã mạnh. Hoàn trả chủ yếu đến từ \textbf{sai kích cỡ} và các vấn đề liên quan đến chất lượng. Hoạt động vận hành nên tập trung vào hướng dẫn chọn size tốt hơn, thông tin sản phẩm chặt chẽ hơn và phân bổ tồn kho thông minh hơn để giảm lost sales và các đơn hoàn trả có thể tránh được.
+
+\subsection{Summary}
+Tóm lại, bộ dữ liệu nhấn mạnh bốn ưu tiên: quản lý tính mùa vụ tốt hơn, giảm phụ thuộc quá mức vào Streetwear, đầu tư vào các kênh thu hút khách hàng có chất lượng cao hơn, và cắt giảm hoàn trả liên quan đến kích cỡ thông qua việc cải thiện truyền thông về sản phẩm và độ vừa vặn.
+
+
+\section{Phần 3: Sales Forecasting}
+
+\subsection{Bài toán và kiểm soát leakage}
+Task 3 yêu cầu dự báo daily \texttt{Revenue} cho giai đoạn \texttt{2023-01-01}--\texttt{2024-07-01}; file nộp cũng giữ cột \texttt{COGS} theo đúng format Kaggle. File cuối \texttt{part3/outputs/submissions/submission\_final.csv} có 548 dòng, giữ nguyên thứ tự \texttt{sample\_submission.csv}. Pipeline chỉ dùng \texttt{sales.csv} đến \texttt{2022-12-31}, không dùng target của test, không random split, và không ghép thêm chuỗi ngoài như thời tiết, vĩ mô hay thị trường.
+
+\subsection{Pipeline mô hình}
+Mỗi ngày được mã hóa bằng khoảng 88 đặc trưng: calendar (tháng, thứ, đầu/cuối tháng, payday), Fourier cycles cho mùa vụ năm/tuần/tháng, event flags (11/11, 12/12, Black Friday, Tết), promotion windows từ \texttt{promotions.csv}, và regime/trend features sau 2020. Hai target \texttt{Revenue}, \texttt{COGS} được học trên thang \texttt{log1p}. Validation là hold-out cuối chuỗi: train đến \texttt{2022-07-04}, validate đến \texttt{2022-12-31} (180 ngày), nên calibration không nhìn thấy tương lai.
+
+Kiến trúc là ensemble bốn lớp: (1) LightGBM, XGBoost, CatBoost và LightGBM Quantile-50, mỗi booster gồm base model và 4 quarterly specialists; (2) Ridge regression trên feature chuẩn hóa z-score; (3) blend $20\%$ Ridge và $80\%$ GBM blend; (4) calibration theo từng target. Pipeline giữ hai artifact: \texttt{submission.csv} là biến thể tốt nhất trên validation, còn \texttt{submission\_final.csv} là bản fixed-calibrated dùng để nộp Kaggle.
+
+\subsection{Kết quả và submission}
+Do test labels bị ẩn trên Kaggle, MAE/RMSE/$R^2$ của test không thể tính local; bảng dưới báo cáo validation hold-out 2022-H2 đúng theo ba chỉ số trong đề.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Hiệu suất validation của biến thể tốt nhất trên hold-out 2022-H2.}
+    \label{tab:task3-validation}
+    \small
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{lrrr}
+        \toprule
+        Target & MAE $\downarrow$ & RMSE $\downarrow$ & $R^2$ $\uparrow$ \\
+        \midrule
+        Revenue & 444,198 & 600,258 & 0.759 \\
+        COGS & 405,869 & 535,932 & 0.725 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+File \texttt{submission\_final.csv} đạt public leaderboard score \textbf{681,610}; dự báo trung bình là \textbf{4.20 triệu} cho \texttt{Revenue} và \textbf{3.75 triệu} cho \texttt{COGS}. Dự báo được clip không âm trước khi xuất file. Chúng tôi không ép hậu xử lý \texttt{COGS <= Revenue} vì trong train có khoảng \textbf{10\%} ngày \texttt{COGS} vượt doanh thu thuần, thường do discount hoặc hoàn trả làm giảm net revenue.
+
+\subsection{Giải thích mô hình và tái lập}
+SHAP trên tree models cho thấy mô hình dựa chủ yếu vào mùa vụ, trend sau 2020, chu kỳ trong tháng và lịch campaign. Các feature quan trọng nhất gồm \texttt{cos\_y1}, \texttt{t\_days}, \texttt{t\_years}, \texttt{doy}, \texttt{days\_to\_eom}, \texttt{month}, \texttt{day}, \texttt{dow}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.47\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/shap_bar_Revenue_LGB.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.47\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/shap_dep_Revenue_LGB_t_days.png}
+    \end{minipage}
+    \caption{SHAP cho Revenue model: feature importance và tác động của trend hậu 2020.}
+    \label{fig:task3-shap}
+\end{figure}
+
+Toàn bộ pipeline nằm tại \url{https://github.com/NhtJm/nevergiveuppteam}. Tái lập: \texttt{cd part3}, \texttt{pip install -r requirements.txt}, \texttt{python run.py train}, \texttt{python run.py explain}. Seed cố định là \texttt{42}; CatBoost có thể dao động nhẹ ở mức khoảng 1--2K MAE.
+
+
+\section{Kết luận}
+Bài làm cho thấy bốn ưu tiên hành động: chuẩn bị tồn kho trước peak demand, giảm phụ thuộc vào Streetwear, chuyển marketing budget sang kênh chuyển đổi tốt hơn, và giảm hoàn trả do sai kích cỡ. Forecasting pipeline bổ sung lớp ra quyết định định lượng cho demand planning, giúp doanh nghiệp kết nối insight EDA với kế hoạch tồn kho, campaign và logistics.
+
+\end{document}

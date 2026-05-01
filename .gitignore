@@ -1,0 +1,16 @@
+.omx/
+.omc/
+**/.omx/
+**/.omc/
+.DS_Store
+**/.DS_Store
+__pycache__/
+**/__pycache__/
+*.pyc
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.synctex*
