@@ -1,0 +1,18 @@
+======================================================================
+OPTUNA TUNING — 25 trials × 3 boosters × 2 targets = 150 fits
+======================================================================
+
+Train 3653 / Val 180
+
+--- Target: REV ---
+  lgb: best val_MAE_log=0.1782  params={'learning_rate': 0.0286, 'num_leaves': 204, 'min_data_in_leaf': 24, 'feature_fraction': 0.7571, 'bagging_fraction': 0.7962, 'lambda_l2': 0.2323}  (40s)
+  xgb: best val_MAE_log=0.1790  params={'learning_rate': 0.0145, 'max_depth': 7, 'min_child_weight': 1, 'subsample': 0.7445, 'colsample_bytree': 0.9278, 'reg_lambda': 1.3017}  (59s)
+  cat: best val_MAE_log=0.1823  params={'learning_rate': 0.0276, 'depth': 10, 'l2_leaf_reg': 7.5879}  (52s)
+
+--- Target: COG ---
+  lgb: best val_MAE_log=0.1845  params={'learning_rate': 0.027, 'num_leaves': 85, 'min_data_in_leaf': 63, 'feature_fraction': 0.5697, 'bagging_fraction': 0.6461, 'lambda_l2': 1.8318}  (36s)
+  xgb: best val_MAE_log=0.1829  params={'learning_rate': 0.0326, 'max_depth': 9, 'min_child_weight': 6, 'subsample': 0.7608, 'colsample_bytree': 0.908, 'reg_lambda': 4.118}  (52s)
+  cat: best val_MAE_log=0.1869  params={'learning_rate': 0.0119, 'depth': 10, 'l2_leaf_reg': 7.4245}  (93s)
+
+Total tuning time: 334s
+Saved: /Users/nhatnguyen/Desktop/datathon-task3/outputs/logs/best_params.json

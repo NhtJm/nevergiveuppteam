@@ -1,0 +1,36 @@
+======================================================================
+EXPLAINABILITY ANALYSIS — SHAP
+======================================================================
+  features: 88  rows: 3833
+
+--- Target: Revenue ---
+  training LGB-rev...
+  [Revenue_LGB] computing SHAP on 1500 samples...
+  training CAT-rev...
+  [Revenue_CAT] computing SHAP on 1500 samples...
+
+--- Target: COGS ---
+  training LGB-cog...
+  [COGS_LGB] computing SHAP on 1500 samples...
+  training CAT-cog...
+  [COGS_CAT] computing SHAP on 1500 samples...
+
+  Top features across all models: 14
+
+[DONE] SHAP analysis written to /Users/nhatnguyen/Desktop/datathon-task3/outputs/shap/
+  - 4 model explanations
+  - Combined importance: /Users/nhatnguyen/Desktop/datathon-task3/outputs/shap/shap_importance_combined.csv
+  - Markdown summary: /Users/nhatnguyen/Desktop/datathon-task3/outputs/shap/SHAP_REPORT.md
+
+Top 10 combined:
+    feature    total
+     cos_y1 0.829619
+     t_days 0.515120
+    t_years 0.296464
+        doy 0.274292
+     sin_m1 0.199122
+days_to_eom 0.191687
+     sin_y1 0.143309
+     cos_m1 0.133878
+      month 0.120083
+        day 0.108140

@@ -1,0 +1,31 @@
+{
+  "elapsed_sec": 264.33325600624084,
+  "n_features": 142,
+  "n_trials_optuna": 30,
+  "val_mae": {
+    "Revenue": 105382.65548752341,
+    "COGS": 42475.374859011485
+  },
+  "best_params": {
+    "Revenue": {
+      "learning_rate": 0.07348118405270448,
+      "max_iter": 1021,
+      "max_leaf_nodes": 75,
+      "max_depth": 4,
+      "min_samples_leaf": 78,
+      "l2_regularization": 0.8158738235092007,
+      "max_bins": 133
+    },
+    "COGS": {
+      "learning_rate": 0.0474362091733208,
+      "max_iter": 1326,
+      "max_leaf_nodes": 15,
+      "max_depth": 11,
+      "min_samples_leaf": 72,
+      "l2_regularization": 4.497500627985822,
+      "max_bins": 170
+    }
+  },
+  "rev_mean_test": 4250000.000182482,
+  "cogs_mean_test": 3476313.453321168
+}

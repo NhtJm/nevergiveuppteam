@@ -1,0 +1,39 @@
+======================================================================
+TRAINING PIPELINE v2 — multi-seed + auto-tuned calibration
+======================================================================
+
+[1/5] Building features...
+      train: 3833 rows × 88 features
+      sample weights: 1826 stable / 2007 other
+      hold-out (2022-H2): 180 days
+
+[2/5] Layer 1 — boosters × 3 seeds × (base + 4 Q-specialists)
+      Revenue weights (0.5, 0.5, 0.0)  COGS weights (0.75, 0.25, 0.0)
+  LGB-REV: base...
+  LGB-REV: 4 Q-specialists...
+  XGB-REV: base...
+  XGB-REV: 4 Q-specialists...
+  Skip CAT (REV) — weight 0
+  LGB-COG: base...
+  LGB-COG: 4 Q-specialists...
+  XGB-COG: base...
+  XGB-COG: 4 Q-specialists...
+  Skip CAT (COG) — weight 0
+
+[3/5] Layer 2 — Ridge (z-score)...
+
+[4/5] Layer 3 — Ensemble (Ridge + GBM_blend)...
+      raw test Revenue mean: 3,371,727
+      raw test COGS mean:    2,860,649
+
+[5/5] Layer 4 — Auto-tune calibration on hold-out 2022-H2...
+      Tuned CR=1.000  val_MAE_rev=424,442
+      Tuned CC=1.000  val_MAE_cog=368,835
+      Default CR=1.260  val_MAE_rev=742,735
+      Default CC=1.320  val_MAE_cog=751,418
+      Picked CR=1.000  CC=1.000
+  Wrote /Users/nhatnguyen/Desktop/datathon-task3/outputs/submissions/submission_tuned.csv  Rev mean=3,371,727  COGS mean=2,860,649
+  Wrote /Users/nhatnguyen/Desktop/datathon-task3/outputs/submissions/submission_default.csv  Rev mean=4,248,376  COGS mean=3,776,057
+
+[DONE] 342.5s elapsed
+  MAIN submission: /Users/nhatnguyen/Desktop/datathon-task3/outputs/submissions/submission.csv  CR=1.000 CC=1.000

@@ -1,0 +1,21 @@
+======================================================================
+COMPONENT DECOMPOSITION PIPELINE — Revenue = orders × AOV
+======================================================================
+
+[1/4] Building static features...
+  features: 88  train rows: 3833
+
+[2/4] Training n_orders model (5 seeds × 3 boosters = 15 fits)...
+  n_orders predicted mean: 99.6
+
+[3/4] Training AOV model (5 seeds × 3 boosters = 15 fits)...
+  AOV predicted mean: 32,467
+
+[4/4] Combining Revenue = orders × AOV...
+  Component Revenue mean: 3,227,447
+  Scale to TARGET_MEAN=4,400,000  factor=1.363
+
+[DONE] 229.4s elapsed
+  Wrote /Users/nhatnguyen/Desktop/datathon-task3/outputs/submissions/submission_components.csv
+  Rev mean: 4,400,000  COGS mean: 3,615,478
+  margin: 0.178

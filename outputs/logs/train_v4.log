@@ -1,0 +1,40 @@
+======================================================================
+TRAINING PIPELINE v4 — unbiased calibration + per-quarter tuning
+======================================================================
+
+[1/5] Building features (NO Tet-aligned lag — hurt in this arch)...
+      train: 3833 rows × 88 features
+      val period (2022-H2): 180 days
+
+[2/5] Layer 1 — LGB + XGB × (base + 4 Q-specialists), unbiased val pred
+  LGB-REV: base...
+  LGB-REV: 4 Q-specialists...
+  XGB-REV: base...
+  XGB-REV: 4 Q-specialists...
+  LGB-COG: base...
+  LGB-COG: 4 Q-specialists...
+  XGB-COG: base...
+  XGB-COG: 4 Q-specialists...
+
+[3/5] Layer 2 — Ridge (z-score)...
+
+[4/5] Layer 3 — Ensemble (Ridge + GBM_blend)...
+      raw test Revenue mean: 3,355,716
+      raw test COGS mean:    2,841,479
+      raw val Revenue mean:  2,602,660  truth=2,571,449
+      raw val COGS mean:     2,290,505  truth=2,289,299
+
+[5/5] Layer 4 — Unbiased calibration tuning on hold-out 2022-H2...
+      Global CR=0.990  val_MAE_rev=444,264
+      Global CC=0.990  val_MAE_cog=401,526
+      Per-Q CR={1: 1.0, 2: 1.0, 3: 0.995, 4: 0.97}  val_MAE_rev=443,561
+      Per-Q CC={1: 1.0, 2: 1.0, 3: 0.99, 4: 0.975}  val_MAE_cog=401,509
+      Default CR=1.26  val_MAE_rev=764,360
+      Default CC=1.32  val_MAE_cog=773,254
+  Wrote /Users/nhatnguyen/Desktop/datathon-task3/outputs/submissions/submission_global.csv  Rev mean=3,322,159  COGS mean=2,813,065
+  Wrote /Users/nhatnguyen/Desktop/datathon-task3/outputs/submissions/submission_per_q.csv  Rev mean=3,343,118  COGS mean=2,829,410
+  Wrote /Users/nhatnguyen/Desktop/datathon-task3/outputs/submissions/submission_default.csv  Rev mean=4,228,202  COGS mean=3,750,753
+
+[DONE] 96.5s elapsed
+  Best variant by val MAE: per_q  (sum_MAE=845,070)
+  MAIN: outputs/submissions/submission.csv  Rev=3,343,118  COGS=2,829,410
