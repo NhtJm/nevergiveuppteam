@@ -43,8 +43,9 @@
 \maketitle
 
 \begin{abstract}
-Báo cáo này tóm tắt các insight kinh doanh chính từ dashboard của Phần 2 và sắp xếp chúng thành một câu chuyện rõ ràng, phù hợp với yêu cầu của cuộc thi. Chúng tôi đi từ các phát hiện mô tả, đến phần diễn giải nguyên nhân, và kết thúc bằng các khuyến nghị thực tiễn liên quan đến tính mùa vụ, thu hút khách hàng, thiết kế khuyến mãi, hiệu quả sản phẩm, vận hành theo khu vực và rủi ro tồn kho.
+Báo cáo này trình bày kết quả phân tích dữ liệu và mô hình dự báo doanh thu cho Datathon 2026 Vòng 1. Ở Phần 2, chúng tôi tổng hợp các phát hiện kinh doanh chính từ dashboard, bao gồm tính mùa vụ của doanh thu, hiệu quả danh mục sản phẩm, chất lượng kênh thu hút khách hàng, và các vấn đề vận hành liên quan đến hoàn trả. Ở Phần 3, chúng tôi xây dựng pipeline dự báo daily \texttt{Revenue} và \texttt{COGS} bằng ensemble các mô hình cây tăng cường, Ridge regression, calibration và giải thích mô hình bằng SHAP. Kết quả cho thấy mô hình nắm bắt tốt các tín hiệu mùa vụ, xu hướng sau 2020 và chu kỳ trong tháng, đồng thời tạo ra file nộp đúng định dạng để hỗ trợ lập kế hoạch tồn kho, khuyến mãi và vận hành.
 \end{abstract}
+
 
 \section{Giới thiệu}
 
@@ -210,5 +211,17 @@ Toàn bộ pipeline nằm tại \url{https://github.com/NhtJm/nevergiveuppteam}.
 
 \section{Kết luận}
 Bài làm cho thấy bốn ưu tiên hành động: chuẩn bị tồn kho trước peak demand, giảm phụ thuộc vào Streetwear, chuyển marketing budget sang kênh chuyển đổi tốt hơn, và giảm hoàn trả do sai kích cỡ. Forecasting pipeline bổ sung lớp ra quyết định định lượng cho demand planning, giúp doanh nghiệp kết nối insight EDA với kế hoạch tồn kho, campaign và logistics.
+
+\clearpage
+\section*{Tài liệu tham khảo}
+\small
+\begin{enumerate}[leftmargin=1.5em]
+    \item Ban tổ chức Datathon 2026. \textit{Đề thi Vòng 1: Datathon 2026 --- The Gridbreakers}. VinTelligence, VinUni DS\&AI Club, 2026.
+    \item Guolin Ke, Qi Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei Ye, and Tie-Yan Liu. LightGBM: A Highly Efficient Gradient Boosting Decision Tree. \textit{NeurIPS}, 2017.
+    \item Tianqi Chen and Carlos Guestrin. XGBoost: A Scalable Tree Boosting System. \textit{KDD}, 2016.
+    \item Liudmila Prokhorenkova, Gleb Gusev, Aleksandr Vorobev, Anna Veronika Dorogush, and Andrey Gulin. CatBoost: unbiased boosting with categorical features. \textit{NeurIPS}, 2018.
+    \item Scott M. Lundberg and Su-In Lee. A Unified Approach to Interpreting Model Predictions. \textit{NeurIPS}, 2017.
+    \item Fabian Pedregosa et al. Scikit-learn: Machine Learning in Python. \textit{Journal of Machine Learning Research}, 2011.
+\end{enumerate}
 
 \end{document}
