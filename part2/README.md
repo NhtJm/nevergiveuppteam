@@ -1,22 +1,17 @@
 # Part 2 — Visualization and Data Analysis
 
-This folder is reserved for the Part 2 EDA materials: notebooks, dashboards, exported figures, and supporting analysis files.
+This folder contains the Part 2 Data Analysis and Visualization materials.
 
-We will fill this section gradually as the final Part 2 story is cleaned up.
-
-## Expected Contents
-
-Suggested structure:
+## Contents
 
 ```text
 part2/
-├── notebooks/      # EDA notebooks
-├── figures/        # exported charts used in the report
-├── data/           # optional processed summaries for visualization
+├── part2.pbix      # Power BI Dashboard containing the interactive visualizations
+├── part2.pdf       # Static PDF export of the dashboard
 └── README.md
 ```
 
-## Current Report Direction
+## Report Direction
 
 Part 2 should follow the competition rubric:
 
